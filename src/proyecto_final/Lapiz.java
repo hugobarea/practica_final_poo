@@ -7,11 +7,7 @@ public class Lapiz extends Herramienta{
     }
     
     public double calcularDano() {
-    	
-        double danoRealizado;
-       
-        danoRealizado = this.danoBase;
-
-        return danoRealizado;
+         
+    	return this.danoBase;
     }
 }

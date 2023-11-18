@@ -24,4 +24,5 @@ public abstract class Herramienta {
     public void setDanoBase(int danioBase) {
         this.danoBase = danioBase;
     }
+    
 }

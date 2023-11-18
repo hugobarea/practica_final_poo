@@ -1,6 +1,6 @@
 package proyecto_final;
 
-public class Jugador {
+public abstract class Jugador {
     protected int id;
     protected String nombre;
     protected int vida;
@@ -52,6 +52,14 @@ public class Jugador {
 
     public boolean getEstaVivo() {
         return estaVivo;
+    }
+    
+    public void setEsHumano(boolean esHumano) {
+    	this.esHumano = esHumano;
+    }
+    
+    public boolean getEsHumano() {
+    	return esHumano;
     }
 
     public void atacar(Jugador rival) {
