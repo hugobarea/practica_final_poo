@@ -2,8 +2,7 @@ package proyecto_final;
 
 public class Chilla extends Jugador{
 
-	Chilla(int id, String nombre, Herramienta herramienta, boolean esHumano) {
-		super(id, nombre, herramienta, esHumano);
+	Chilla(int id, String nombre) {
+		super(id, nombre, new Arco(3, 80, 1.2), true, 100, 60);
 	}
-
 }

@@ -10,13 +10,13 @@ public abstract class Jugador {
     protected boolean esHumano;
     protected boolean estaVivo;
 
-    Jugador(int id, String nombre, Herramienta herramienta, boolean esHumano) {
+    Jugador(int id, String nombre, Herramienta herramienta, boolean esHumano, int vida, int dano) {
         this.id = id;
         this.nombre = nombre;
 
-        this.vida = 100;
+        this.vida = vida;
         this.escudo = 0;
-        this.dano = 20;
+        this.dano = dano;
         this.herramienta = herramienta;
         this.esHumano = esHumano;
         this.estaVivo = true;
