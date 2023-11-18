@@ -6,7 +6,7 @@ public class Arco extends Herramienta{
 	
 	public Arco(int id, int danoBase, double multiplicadorDano) {
 		super(id,danoBase);
-		this.multiplicadorDano = multiplicadorDano;
+		this.multiplicadorDano = 1.65;
     }
 	
 	public double getMultiplicadorDano() {
@@ -17,4 +17,17 @@ public class Arco extends Herramienta{
         this.multiplicadorDano = multiplicadorDano;
     }
 
+    public double calcularDano() {
+    	
+        int n_aleatorio = (int) Math.floor(Math.random() * 10);
+        double danoRealizado;
+        
+        if (n_aleatorio < 6) {
+            danoRealizado = this.danoBase * this.multiplicadorDano;
+        } else {
+            danoRealizado = 0;
+        }
+
+        return danoRealizado;
+    }
 }

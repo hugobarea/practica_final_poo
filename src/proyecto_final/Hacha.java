@@ -6,7 +6,7 @@ public class Hacha extends Herramienta{
 	
 	public Hacha(int id, int danoBase, double multiplicadorDano) {
 		super(id,danoBase);
-		this.multiplicadorDano = multiplicadorDano;
+		this.multiplicadorDano = 1.5;
     }
 	
 	public double getMultiplicadorDano() {
@@ -15,6 +15,20 @@ public class Hacha extends Herramienta{
 
     public void setMultiplicadorDano(double multiplicadorDano) {
         this.multiplicadorDano = multiplicadorDano;
+    }
+    
+    public double calcularDano() {
+    	
+        int n_aleatorio = (int) Math.floor(Math.random() * 10);
+        double danoRealizado;
+        
+        if (n_aleatorio < 8) {
+            danoRealizado = this.danoBase * this.multiplicadorDano;
+        } else {
+            danoRealizado = 0;
+        }
+
+        return danoRealizado;
     }
 
 }
