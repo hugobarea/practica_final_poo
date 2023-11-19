@@ -26,6 +26,10 @@ public class Partida {
 
     public void simularAtaque() {
 
+        if(jugadores_actuales == 1) {
+            return;
+        }
+
         // Elegir dos jugadores aleatorios
 
         int j1 = (int) Math.floor(Math.random() * jugadores_actuales);
@@ -41,6 +45,19 @@ public class Partida {
 
         if(!this.jugadores[j2].getEstaVivo()) {
             this.jugadores[j2] = null;
+
+            for(int i = j2 + 1; i < this.max_jugadores; i++) {
+                this.jugadores[i - 1] = this.jugadores[i];
+            }
+
+            this.jugadores[this.max_jugadores - 1] = null;
+            this.jugadores_actuales--;
+
+            if(this.jugadores_actuales == 1) {
+                System.out.println("--> El ganador es " + this.jugadores[0].nombre);
+            } else {
+                System.out.println("--> Quedan " + this.jugadores_actuales + " jugadores");
+            }
         }
 
     }
@@ -48,11 +65,11 @@ public class Partida {
     public static void main(String args[]) {
         Partida partida = new Partida(5);
 
-        partida.addJugador(new Bombero(1, "Manolito"));
-        partida.addJugador(new Bombero(1, "Fran"));
-        partida.addJugador(new Bombero(1, "Paco"));
-        partida.addJugador(new Bombero(1, "El Gamer"));
-        partida.addJugador(new Bombero(1, "Manuel Rodriguez"));
+        partida.addJugador(new Bombero( "Manolito", false));
+        partida.addJugador(new Bombero("Fran", false));
+        partida.addJugador(new Bombero("Paco", false));
+        partida.addJugador(new Bombero( "El Gamer", false));
+        partida.addJugador(new Bombero( "Manuel Rodriguez", false));
         partida.simularAtaque();
         partida.simularAtaque();
         partida.simularAtaque();
