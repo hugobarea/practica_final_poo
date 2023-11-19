@@ -6,7 +6,7 @@ public class Lanza extends Herramienta{
 	
 	public Lanza(int id, int danoBase, double multiplicadorDano) {
 		super(id,danoBase);
-		this.multiplicadorDano = 1.2;
+		this.multiplicadorDano = multiplicadorDano;
     }
 	
 	public double getMultiplicadorDano() {

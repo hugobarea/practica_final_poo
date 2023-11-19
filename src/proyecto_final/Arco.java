@@ -6,7 +6,7 @@ public class Arco extends Herramienta{
 	
 	public Arco(int id, int danoBase, double multiplicadorDano) {
 		super(id,danoBase);
-		this.multiplicadorDano = 1.65;
+		this.multiplicadorDano = multiplicadorDano;
     }
 	
 	public double getMultiplicadorDano() {

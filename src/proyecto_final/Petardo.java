@@ -6,7 +6,7 @@ public class Petardo extends Herramienta{
 	
 	public Petardo(int id, int danoBase, double multiplicadorDano) {
 		super(id,danoBase);
-		this.multiplicadorDano = 5;
+		this.multiplicadorDano = multiplicadorDano;
     }
 	
 	public double getMultiplicadorDano() {

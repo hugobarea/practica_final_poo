@@ -6,7 +6,7 @@ public class Hacha extends Herramienta{
 	
 	public Hacha(int id, int danoBase, double multiplicadorDano) {
 		super(id,danoBase);
-		this.multiplicadorDano = 1.5;
+		this.multiplicadorDano = multiplicadorDano;
     }
 	
 	public double getMultiplicadorDano() {
