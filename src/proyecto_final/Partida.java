@@ -2,6 +2,7 @@ package proyecto_final;
 
 public class Partida {
     private Jugador[] jugadores;
+    private Jugador[] muertos;
     private int max_jugadores;
     private int jugadores_actuales;
 
@@ -24,6 +25,10 @@ public class Partida {
         this.jugadores_actuales++;
     }
 
+    public Jugador[] getJugadores() {
+        return jugadores;
+    }
+
     public void simularAtaque() {
 
         if(jugadores_actuales == 1) {
@@ -44,7 +49,9 @@ public class Partida {
         }
 
         if(!this.jugadores[j2].getEstaVivo()) {
+            this.muertos[max_jugadores - jugadores_actuales] = this.jugadores[j2];
             this.jugadores[j2] = null;
+
 
             for(int i = j2 + 1; i < this.max_jugadores; i++) {
                 this.jugadores[i - 1] = this.jugadores[i];
@@ -60,21 +67,5 @@ public class Partida {
             }
         }
 
-    }
-
-    public static void main(String args[]) {
-        Partida partida = new Partida(5);
-
-        partida.addJugador(new Bombero( "Manolito", false));
-        partida.addJugador(new Bombero("Fran", false));
-        partida.addJugador(new Bombero("Paco", false));
-        partida.addJugador(new Bombero( "El Gamer", false));
-        partida.addJugador(new Bombero( "Manuel Rodriguez", false));
-        partida.simularAtaque();
-        partida.simularAtaque();
-        partida.simularAtaque();
-        partida.simularAtaque();
-        partida.simularAtaque();
-        partida.simularAtaque();
     }
 }

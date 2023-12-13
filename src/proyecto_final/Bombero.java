@@ -5,17 +5,17 @@ public class Bombero extends Jugador {
 	Bombero(String nombre, boolean esHumano) {
 		super(0, nombre, new Petardo(4, 100, 5), esHumano, 100, 120);
 	}
-	
+
 	public double calcularDanio() {
-        
-        double danioBase = 100;  
 
-        int vidaRestante = this.getVida();
+		double danioBase = 100;
 
-        double danioRealizado = ((Petardo) herramienta).calcularDano();
+		int vidaRestante = this.getVida();
 
-        danioRealizado *= (vidaRestante / 100); 
+		double danioRealizado = ((Petardo) herramienta).calcularDano();
 
-        return danioBase + danioRealizado;
+		danioRealizado *= (vidaRestante / 100);
+
+		return danioBase + danioRealizado;
 	}
 }

@@ -95,6 +95,10 @@ public abstract class Jugador {
 
     }
 
+    public void curarse() {
+        this.vida += Math.floor(Math.random()) * 20;
+    }
+
     public String toString() {
         return "El jugador " + this.nombre + " tiene " + this.vida + " de vida.";
     }
