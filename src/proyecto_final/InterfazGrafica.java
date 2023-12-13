@@ -7,6 +7,7 @@ public class InterfazGrafica extends JFrame implements ActionListener {
     private Partida partida;
     private int N_JUGADORES;
     private JButton btn_jugadores[];
+    private JTextArea pantalla;
     public InterfazGrafica() {
 
         this.N_JUGADORES = 5;
@@ -47,7 +48,7 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         // CREAR PANTALLA PARA MOSTRAR MENSAJES
 
         String textoPantalla = "";
-        JTextArea pantalla = new JTextArea();
+        pantalla = new JTextArea();
         pantalla.setColumns(30);
         pantalla.setRows(5);
         pantalla.setEditable(false);
@@ -71,16 +72,16 @@ public class InterfazGrafica extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
+        double informacionAtaque[] = new double[5];
+
         if(e.getSource() instanceof JButton) {
             if(((JButton) e.getSource()).getText() == "Siguiente ronda") {
-                partida.simularAtaque();
+                informacionAtaque = partida.simularAtaque();
                 System.out.println("Ataque simulado");
 
-                for(int i = 0; i < N_JUGADORES; i++) {
-                    if(!partida.getJugadores()[i].getEstaVivo()) {
-                        btn_jugadores[i].setBackground(Color.RED);
-
-                    }
+                if(informacionAtaque[4] == 1) {
+                    btn_jugadores[(int) informacionAtaque[1]].setBackground(Color.RED);
+                    pantalla.setText(partida.getMuertos()[N_JUGADORES - partida.getVivos() - 1].nombre + " ha muerto.");
                 }
 
             }
