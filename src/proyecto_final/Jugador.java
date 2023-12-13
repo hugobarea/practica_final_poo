@@ -53,19 +53,21 @@ public abstract class Jugador {
     public boolean getEstaVivo() {
         return estaVivo;
     }
-    
+
     public void setEsHumano(boolean esHumano) {
-    	this.esHumano = esHumano;
-    }
-    
-    public boolean getEsHumano() {
-    	return esHumano;
+        this.esHumano = esHumano;
     }
 
-    public void atacar(Jugador rival) {
+    public boolean getEsHumano() {
+        return esHumano;
+    }
+
+    public double[] atacar(Jugador rival) {
 
         int n_aleatorio = (int) Math.floor(Math.random() * 10);
         double danoRealizado;
+
+        double retorno[] = {0, 0, 0, 0, 0}; // { id j1, id j2, daño realizado, critico o no, ha muerto o no }
 
         if(n_aleatorio == 1) {
             danoRealizado = this.dano * 1.5;
@@ -80,19 +82,19 @@ public abstract class Jugador {
             rival.setEstaVivo(false);
         }
 
-
-        System.out.print(this.nombre + " ha atacado a " + rival.getNombre() + ": -" + danoRealizado + " de vida. ");
-
         if(danoRealizado > this.dano) {
-            System.out.println("GOLPE CRÍTICO!");
-        } else {
-            System.out.println();
+            retorno[3] = 1;
         }
 
         if(!rival.getEstaVivo()) {
-            System.out.println(rival.getNombre() + " ha muerto.");
+            retorno[4] = 1;
         }
 
+        retorno[0] = this.id;
+        retorno[1] = rival.id;
+        retorno[2] = danoRealizado;
+
+        return retorno;
     }
 
     public void curarse() {
