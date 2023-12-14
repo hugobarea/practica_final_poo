@@ -8,9 +8,12 @@ public class InterfazGrafica extends JFrame implements ActionListener {
     private int N_JUGADORES;
     private JButton btn_jugadores[];
     private JTextArea pantalla;
+    private JButton n_ronda;
+    private int contador_ronda;
     public InterfazGrafica() {
 
         this.N_JUGADORES = 5;
+        this.contador_ronda = 1;
 
         this.partida = new Partida(N_JUGADORES);
 
@@ -18,11 +21,11 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         setTitle("Battle Royale");
         setLayout(new FlowLayout());
 
-        partida.addJugador(new Bombero( "Manolito", false));
-        partida.addJugador(new Bombero("Fran", false));
-        partida.addJugador(new Bombero("Paco", false));
+        partida.addJugador(new Legolas( "Manolito", false));
+        partida.addJugador(new Chilla("Fran", false));
+        partida.addJugador(new Tyrion("Paco", false));
         partida.addJugador(new Bombero( "El Gamer", false));
-        partida.addJugador(new Bombero( "Manuel Rodriguez", false));
+        partida.addJugador(new Escritor( "Manuel Rodriguez", false));
 
         this.btn_jugadores = new JButton[N_JUGADORES];
         Jugador jugadores[] = partida.getJugadores();
@@ -37,6 +40,9 @@ public class InterfazGrafica extends JFrame implements ActionListener {
             btn_jugadores[i].setBackground(Color.green);
             add(btn_jugadores[i]);
         }
+
+        n_ronda = new JButton("Ronda 1");
+        add(n_ronda);
 
         // CREAR BOTON DE SIGUIENTE RONDA
 
@@ -77,11 +83,19 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         if(e.getSource() instanceof JButton) {
             if(((JButton) e.getSource()).getText() == "Siguiente ronda") {
                 informacionAtaque = partida.simularAtaque();
-                System.out.println("Ataque simulado");
+                contador_ronda++;
+                n_ronda.setText("Ronda " + contador_ronda);
 
                 if(informacionAtaque[4] == 1) {
                     btn_jugadores[(int) informacionAtaque[1]].setBackground(Color.RED);
                     pantalla.setText(partida.getMuertos()[N_JUGADORES - partida.getVivos() - 1].nombre + " ha muerto.");
+                } else {
+                    pantalla.setText(partida.getJugadores()[(int) informacionAtaque[0]].getNombre() + " ha atacado a " + partida.getJugadores()[(int) informacionAtaque[1]].getNombre() + ": " + -1 * informacionAtaque[2] + " de daño.");
+                }
+
+                if(partida.getVivos() == 1) {
+                    pantalla.setText(partida.getJugadores()[0].nombre + " ha ganado la partida.");
+                    ((JButton) e.getSource()).setEnabled(false);
                 }
 
             }

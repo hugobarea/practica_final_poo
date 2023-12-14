@@ -66,48 +66,17 @@ public class Partida {
         double informacionAtaque[] = new double[5];
 
         if (!this.jugadores[j1].getEsHumano()) {
-
             informacionAtaque = this.jugadores[j1].atacar(this.jugadores[j2]);
-
             System.out.println(this.jugadores[j1].getNombre() + " ha atacado a " + this.jugadores[j2].getNombre() + ": " + -1 * informacionAtaque[2] + " de daño.");
-
-            resultados = resultados + this.jugadores[j1].nombre + " ha atacado a " + this.jugadores[j2].nombre + ": -120.0 de vida. \n";
-
-            if (!this.jugadores[j2].getEstaVivo()) {
-                resultados = resultados + this.jugadores[j2].nombre + " ha muerto.\n";
-            }
-            resultados = resultados + "--> Quedan " + this.jugadores_actuales + " jugadores\n";
-
+            resultados = resultados + this.jugadores[j1].getNombre() + " ha atacado a " + this.jugadores[j2].getNombre() + ": " + -1 * informacionAtaque[2] + " de daño.\n";
         }
 
-        if (!this.jugadores[j2].getEstaVivo()) {
-            this.muertos[max_jugadores - jugadores_actuales] = this.jugadores[j2];
-            this.jugadores[j2] = null;
-
-
-            for (int i = j2 + 1; i < this.max_jugadores; i++) {
-                if (!this.jugadores[j2].getEstaVivo()) {
-                    this.jugadores[j2] = null;
-
-                    for (int j = j2 + 1; j < this.max_jugadores; j++) {
-                        this.jugadores[j - 1] = this.jugadores[j];
-                    }
-
-                    this.jugadores[this.max_jugadores - 1] = null;
-                    this.jugadores_actuales--;
-
-                    if (this.jugadores_actuales == 1) {
-                        resultados = resultados + "--> El ganador es " + this.jugadores[0].nombre + "\n";
-                    }
-                }
-            }
-        }
         // Si un jugador muere, meterle en el array de muertos y sacarle del array de jugadores actuales.
 
         if(informacionAtaque[4]==1) {
 
             System.out.println(this.jugadores[j2].nombre + " ha muerto.");
-
+            resultados = resultados + this.jugadores[j2].nombre + " ha muerto.\n";
             this.muertos[max_jugadores - jugadores_actuales] = this.jugadores[j2];
             this.jugadores[j2] = null;
 
@@ -119,9 +88,10 @@ public class Partida {
             this.jugadores_actuales--;
 
             if (this.jugadores_actuales == 1) {
-                System.out.println("--&gt; El ganador es " + this.jugadores[0].nombre);
+                System.out.println("->; El ganador es " + this.jugadores[0].nombre);
             } else {
-                System.out.println("--&gt; Quedan " + this.jugadores_actuales + " jugadores");
+                System.out.println("-> Quedan " + this.jugadores_actuales + " jugadores");
+                resultados = resultados + "--> Quedan " + this.jugadores_actuales + " jugadores\n";
             }
         }
 
