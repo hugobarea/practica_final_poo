@@ -26,6 +26,10 @@ public abstract class Jugador {
         return nombre;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
