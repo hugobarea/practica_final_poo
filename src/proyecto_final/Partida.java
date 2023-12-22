@@ -55,10 +55,6 @@ public class Partida {
         return muertos;
     }
 
-    public String getResultados() {
-        return this.resultados;
-    }
-
     public double[] simularAtaque(int j1, int j2) {
 
         if (jugadores_actuales == 1) {
@@ -111,23 +107,18 @@ public class Partida {
             this.muertos[max_jugadores - jugadores_actuales] = this.jugadores[j2];
             this.jugadores[j2] = null;
 
-            /*for (int i = j2 + 1; i < this.max_jugadores; i++) {
-                this.jugadores[i - 1] = this.jugadores[i];
-            }*/
 
             for (int i = j2; i < this.jugadores_actuales - 1; i++) {
                 this.jugadores[i] = this.jugadores[i + 1];
             }
 
-            //this.jugadores[this.max_jugadores - 1] = null;
             this.jugadores[this.jugadores_actuales - 1] = null;
-
-            //this.jugadores[j2] = null;
 
             this.jugadores_actuales--;
 
             if (this.jugadores_actuales == 1) {
                 System.out.println("--> El ganador es " + this.jugadores[0].nombre);
+                resultados = resultados + "--> El ganador es " + this.jugadores[0].nombre;
             } else {
                 System.out.println("--> Quedan " + this.jugadores_actuales + " jugadores");
                 resultados = resultados + "\n--> Quedan " + this.jugadores_actuales + " jugadores\n\n";
@@ -152,12 +143,6 @@ public class Partida {
     }
     public void escribirResultadosEnArchivo(String nombreArchivo) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            for (Jugador jugador : jugadores) {
-                if (jugador != null) {
-                    writer.write(jugador.toString());
-                    writer.newLine();
-                }
-            }
             writer.write("Resultados de ataques:\n");
             writer.write(resultados);
         } catch (Exception e) {

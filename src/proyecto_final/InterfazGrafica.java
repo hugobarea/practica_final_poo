@@ -7,6 +7,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+
+// EL PROGRAMA DEBE ARRANCARSE DESDE ESTE ARCHIVO
+
 public class InterfazGrafica extends JFrame implements ActionListener {
 
     private Partida partida;
@@ -33,12 +36,6 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         setTitle("Mariscos Royale");
         setLayout(new FlowLayout());
 
-        /*partida.addJugador(new Legolas( "Manolito", false));
-        partida.addJugador(new Chilla("Fran", false));
-        partida.addJugador(new Tyrion("Paco", false));
-        partida.addJugador(new Bombero( "El Gamer", false));
-        partida.addJugador(new Escritor( "Manuel Rodriguez", false));*/
-
         this.btn_jugadores = new JButton[N_JUGADORES];
         Jugador jugadores[] = partida.getJugadores();
 
@@ -61,8 +58,6 @@ public class InterfazGrafica extends JFrame implements ActionListener {
             System.out.println("ERROR - Archivo de cabecera no encontrado");
             return;
         }
-
-
 
         // CREAR BOTON PARA ACTUALIZAR NUMERO DE RONDA
 
@@ -109,6 +104,17 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         panel_introducir_jugador.add(crear_jugador);
 
         add(panel_introducir_jugador);
+
+        // PANEL DE DECISION DEL JUGADOR
+
+        panel_decision = new JPanel();
+
+        decision = new JTextField();
+        decision.setColumns(10);
+        btn_decision = new JButton("Decidir");
+        btn_decision.addActionListener(this);
+        panel_decision.add(decision);
+        panel_decision.add(btn_decision);
     }
 
     public static void main(String args[]) {
@@ -134,6 +140,9 @@ public class InterfazGrafica extends JFrame implements ActionListener {
     }
 
     private void crearPartida() {
+
+        // Obtener el nombre y la clase del jugador, y rellenar con bots desde un archivo
+
         String nombre_jugador = ((JTextField) panel_introducir_jugador.getComponent(0)).getText();
         String clase = ((JList<String>) panel_introducir_jugador.getComponent(1)).getSelectedValue();
 
@@ -165,22 +174,11 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         generarBotones();
         siguienteRonda.setEnabled(true);
 
-        // Añadir panel de decision de jugador
-
-        panel_decision = new JPanel();
-
-        decision = new JTextField();
-        decision.setColumns(10);
-        btn_decision = new JButton("Decidir");
-        btn_decision.addActionListener(this);
-        panel_decision.add(decision);
-        panel_decision.add(btn_decision);
-
     }
 
     private void crearSimulacionArchivo() {
 
-       remove(panel_introducir_jugador);
+       remove(panel_introducir_jugador); // si simulamos una partida no se introducirá ningún jugador
 
         JFileChooser elegir_archivo = new JFileChooser();
         elegir_archivo.setCurrentDirectory(new File("."));
@@ -207,8 +205,6 @@ public class InterfazGrafica extends JFrame implements ActionListener {
             pantalla.setText("Introduce 1 para un mini caparazón y 2 para un super caparazón");
             ((JButton) panel_decision.getComponent(1)).setText("Curarse");
         }
-
-
 
     }
     public void actionPerformed(ActionEvent e) {
@@ -259,15 +255,15 @@ public class InterfazGrafica extends JFrame implements ActionListener {
                 }
 
             }
-            else if(((JButton) e.getSource()).getText() == "Simular desde archivo") {
+            else if(((JButton) e.getSource()).getText().equals("Simular desde archivo")) {
                 crearSimulacionArchivo();
             }
 
-            else if(((JButton) e.getSource()).getText() == "Crear Marisco") {
+            else if(((JButton) e.getSource()).getText().equals("Crear Marisco")) {
                 crearPartida();
             }
 
-            else if(((JButton) e.getSource()).getText() == "Decidir") {
+            else if(((JButton) e.getSource()).getText().equals("Decidir")) {
                 gestionarJugadorReal(informacionAtaque);
             }
 
