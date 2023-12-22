@@ -1,10 +1,10 @@
 package proyecto_final;
 
-public class Hacha extends Herramienta{
+public class Pinza extends Herramienta{
 
 	private double multiplicadorDano;
 	
-	public Hacha(int id, int danoBase, double multiplicadorDano) {
+	public Pinza(int id, int danoBase, double multiplicadorDano) {
 		super(id,danoBase);
 		this.multiplicadorDano = multiplicadorDano;
     }

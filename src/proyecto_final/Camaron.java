@@ -1,9 +1,9 @@
 package proyecto_final;
 
-public class Bombero extends Jugador {
+public class Camaron extends Jugador {
 
-	Bombero(String nombre, boolean esHumano) {
-		super(0, nombre, new Petardo(4, 100, 5), esHumano, 100, 120);
+	Camaron(String nombre, boolean esHumano) {
+		super(0, nombre, new Veneno(4, 100, 5), esHumano, 100, 120);
 	}
 
 	public double calcularDanio() {
@@ -12,7 +12,7 @@ public class Bombero extends Jugador {
 
 		int vidaRestante = this.getVida();
 
-		double danioRealizado = ((Petardo) herramienta).calcularDano();
+		double danioRealizado = ((Veneno) herramienta).calcularDano();
 
 		danioRealizado *= (vidaRestante / 100);
 

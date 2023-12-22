@@ -1,9 +1,9 @@
 package proyecto_final;
 
-public class Escritor extends Jugador {
+public class Ostra extends Jugador {
 
-	Escritor(String nombre, boolean esHumano) {
-		super(0, nombre, new Lapiz(0, 20), esHumano, 80, 90);
+	Ostra(String nombre, boolean esHumano) {
+		super(0, nombre, new Tentaculos(0, 20), esHumano, 80, 90);
 	}
 	
 	public double calcularDanio() {
@@ -12,7 +12,7 @@ public class Escritor extends Jugador {
 
         int vidaRestante = this.getVida();
 
-        double danioRealizado = ((Petardo) herramienta).calcularDano();
+        double danioRealizado = ((Veneno) herramienta).calcularDano();
 
         danioRealizado *= (vidaRestante / 100); 
 

@@ -1,10 +1,10 @@
 package proyecto_final;
 
-public class Arco extends Herramienta{
+public class Aguijon extends Herramienta{
 
 	private double multiplicadorDano;
 	
-	public Arco(int id, int danoBase, double multiplicadorDano) {
+	public Aguijon(int id, int danoBase, double multiplicadorDano) {
 		super(id,danoBase);
 		this.multiplicadorDano = multiplicadorDano;
     }
@@ -16,13 +16,13 @@ public class Arco extends Herramienta{
     public void setMultiplicadorDano(double multiplicadorDano) {
         this.multiplicadorDano = multiplicadorDano;
     }
-
+    
     public double calcularDano() {
     	
         int n_aleatorio = (int) Math.floor(Math.random() * 10);
         double danoRealizado;
         
-        if (n_aleatorio < 6) {
+        if (n_aleatorio < 7) {
             danoRealizado = this.danoBase * this.multiplicadorDano;
         } else {
             danoRealizado = 0;
@@ -30,4 +30,5 @@ public class Arco extends Herramienta{
 
         return danoRealizado;
     }
+
 }

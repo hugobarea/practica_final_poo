@@ -1,8 +1,8 @@
 package proyecto_final;
 
-public class Lapiz extends Herramienta{
+public class Tentaculos extends Herramienta{
 	
-	public Lapiz(int id, int danoBase) {
+	public Tentaculos(int id, int danoBase) {
 		super(id,danoBase);
     }
     

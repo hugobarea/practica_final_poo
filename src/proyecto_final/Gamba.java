@@ -1,9 +1,9 @@
 package proyecto_final;
 
-public class Tyrion extends Jugador{
+public class Gamba extends Jugador{
 
-	Tyrion(String nombre, boolean esHumano) {
-		super(0, nombre, new Hacha(1, 70, 1.5), esHumano, 120, 70);
+	Gamba(String nombre, boolean esHumano) {
+		super(0, nombre, new Pinza(1, 70, 1.5), esHumano, 120, 70);
 	}
 	
 	public double calcularDanio() {
@@ -12,7 +12,7 @@ public class Tyrion extends Jugador{
 
         int vidaRestante = this.getVida();
 
-        double danioRealizado = ((Petardo) herramienta).calcularDano();
+        double danioRealizado = ((Veneno) herramienta).calcularDano();
 
         danioRealizado *= (vidaRestante / 100); 
 

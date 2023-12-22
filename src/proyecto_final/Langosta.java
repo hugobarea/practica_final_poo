@@ -1,9 +1,9 @@
 package proyecto_final;
 
-public class Chilla extends Jugador{
+public class Langosta extends Jugador{
 
-	Chilla(String nombre, boolean esHumano) {
-		super(0, nombre, new Arco(3, 80, 1.2), esHumano, 100, 60);
+	Langosta(String nombre, boolean esHumano) {
+		super(0, nombre, new Caña_Pescar(3, 80, 1.2), esHumano, 100, 60);
 	}
 	
 	public double calcularDanio() {
@@ -12,7 +12,7 @@ public class Chilla extends Jugador{
 
         int vidaRestante = this.getVida();
 
-        double danioRealizado = ((Petardo) herramienta).calcularDano();
+        double danioRealizado = ((Veneno) herramienta).calcularDano();
 
         danioRealizado *= (vidaRestante / 100); 
 

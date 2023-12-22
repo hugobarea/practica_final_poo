@@ -1,10 +1,10 @@
 package proyecto_final;
 
-public class Petardo extends Herramienta{
+public class Caña_Pescar extends Herramienta{
 
 	private double multiplicadorDano;
 	
-	public Petardo(int id, int danoBase, double multiplicadorDano) {
+	public Caña_Pescar(int id, int danoBase, double multiplicadorDano) {
 		super(id,danoBase);
 		this.multiplicadorDano = multiplicadorDano;
     }
@@ -22,7 +22,7 @@ public class Petardo extends Herramienta{
         int n_aleatorio = (int) Math.floor(Math.random() * 10);
         double danoRealizado;
         
-        if (n_aleatorio < 4) {
+        if (n_aleatorio < 6) {
             danoRealizado = this.danoBase * this.multiplicadorDano;
         } else {
             danoRealizado = 0;

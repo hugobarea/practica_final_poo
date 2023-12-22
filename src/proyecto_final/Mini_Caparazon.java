@@ -1,8 +1,8 @@
 package proyecto_final;
 
-public class Mini_Curacion extends Pociones{
+public class Mini_Caparazon extends Caparazon{
 
-    public Mini_Curacion(int id, double curacion){
+    public Mini_Caparazon(int id, double curacion){
         super(id, curacion);
     }
 

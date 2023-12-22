@@ -1,14 +1,19 @@
 package proyecto_final;
 
+import java.util.Scanner;
+
 public abstract class Jugador {
     protected int id;
     protected String nombre;
     protected int vida;
     protected int escudo;
     protected int dano;
+
     protected Herramienta herramienta;
     protected boolean esHumano;
     protected boolean estaVivo;
+    protected Caparazon caparazon;
+    protected int opcion;
 
     Jugador(int id, String nombre, Herramienta herramienta, boolean esHumano, int vida, int dano) {
         this.id = id;
@@ -102,7 +107,18 @@ public abstract class Jugador {
     }
 
     public void curarse() {
-        this.vida += Math.floor(Math.random()) * 20;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Selecciona una opción para curarte:");
+        System.out.println("0 - Curarse con Mini_Caparazon");
+        System.out.println("1 - Curarse con Super_Caparazon");
+
+        opcion = scanner.nextInt();
+
+        if (opcion == 0){
+            double curacion = new Mini_Caparazon(1, 25).calcularCuracion();
+        } else if(opcion == 1){
+            double curacion = new Super_Caparazon(2, 100).calcularCuracion();
+        }
     }
 
     public String toString() {

@@ -1,9 +1,9 @@
 package proyecto_final;
 
-public class Legolas extends Jugador{
+public class Almeja extends Jugador{
 
-	Legolas(String nombre, boolean esHumano) {
-        super(0, nombre, new Arco(3, 90, 1.2), esHumano, 80, 90);
+	Almeja(String nombre, boolean esHumano) {
+        super(0, nombre, new Caña_Pescar(3, 90, 1.2), esHumano, 80, 90);
     }
 	
 	public double calcularDanio() {
@@ -12,7 +12,7 @@ public class Legolas extends Jugador{
 
         int vidaRestante = this.getVida();
 
-        double danioRealizado = ((Petardo) herramienta).calcularDano();
+        double danioRealizado = ((Veneno) herramienta).calcularDano();
 
         danioRealizado *= (vidaRestante / 100); 
 
