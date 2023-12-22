@@ -70,8 +70,9 @@ public class Partida {
             informacionAtaque = this.jugadores[j1].atacar(this.jugadores[j2]);
             System.out.println(this.jugadores[j1].getNombre() + " ha atacado a " + this.jugadores[j2].getNombre() + ": " + -1 * informacionAtaque[2] + " de daño.");
             resultados = resultados + this.jugadores[j1].getNombre() + " ha atacado a " + this.jugadores[j2].getNombre() + ": " + -1 * informacionAtaque[2] + " de daño.\n";
+        } else {
+            return new double[]{j1, -1, -1, 1};
         }
-
 
         // Si un jugador muere, meterle en el array de muertos y sacarle del array de jugadores actuales.
 
@@ -133,11 +134,12 @@ public class Partida {
         }
     }
 
-    public void leerInformacionDesdeArchivo(String nombreArchivo) {
+    public void leerInformacionDesdeArchivo(String nombreArchivo, int n) {
 
         String linea;
         String nombre_jugador;
         Scanner s;
+        int i = 0;
 
         try (BufferedReader lector = new BufferedReader(new FileReader(nombreArchivo))) {
 
@@ -146,29 +148,34 @@ public class Partida {
                 s.useDelimiter(",");
                 nombre_jugador = s.next();
 
-                if(jugadores_actuales == max_jugadores) {
+                if(jugadores_actuales == max_jugadores || i == n) {
                     return;
                 }
 
                 switch(s.next()) {
-                    case "Bombero":
-                        jugadores[jugadores_actuales] = new Bombero(nombre_jugador, false);
+                    case "Camaron":
+                        jugadores[jugadores_actuales] = new Camaron(nombre_jugador, false);
+                        i++;
                         break;
 
-                    case "Chilla":
-                        jugadores[jugadores_actuales] = new Chilla(nombre_jugador, false);
+                    case "Langosta":
+                        jugadores[jugadores_actuales] = new Langosta(nombre_jugador, false);
+                        i++;
                         break;
 
-                    case "Escritor":
-                        jugadores[jugadores_actuales] = new Escritor(nombre_jugador, false);
+                    case "Ostra":
+                        jugadores[jugadores_actuales] = new Ostra(nombre_jugador, false);
+                        i++;
                         break;
 
-                    case "Tyrion":
-                        jugadores[jugadores_actuales] = new Tyrion(nombre_jugador, false);
+                    case "Gamba":
+                        jugadores[jugadores_actuales] = new Gamba(nombre_jugador, false);
+                        i++;
                         break;
 
-                    case "Legolas":
-                        jugadores[jugadores_actuales] = new Legolas(nombre_jugador, false);
+                    case "Almeja":
+                        jugadores[jugadores_actuales] = new Almeja(nombre_jugador, false);
+                        i++;
                         break;
                 }
 

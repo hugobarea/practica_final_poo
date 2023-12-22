@@ -1,8 +1,12 @@
 package proyecto_final;
+import javax.imageio.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+
 public class InterfazGrafica extends JFrame implements ActionListener {
 
     private Partida partida;
@@ -12,6 +16,9 @@ public class InterfazGrafica extends JFrame implements ActionListener {
     private JButton n_ronda;
     private int contador_ronda;
     private JButton leer_archivo;
+    private JPanel panel_introducir_jugador;
+    private JButton siguienteRonda;
+    private JPanel panel_decision;
     public InterfazGrafica() {
 
         this.N_JUGADORES = 30;
@@ -19,8 +26,8 @@ public class InterfazGrafica extends JFrame implements ActionListener {
 
         this.partida = new Partida(N_JUGADORES);
 
-        setSize(400, 800);
-        setTitle("Battle Royale");
+        setSize(500, 1000);
+        setTitle("Mariscos Royale");
         setLayout(new FlowLayout());
 
         /*partida.addJugador(new Legolas( "Manolito", false));
@@ -33,15 +40,26 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         Jugador jugadores[] = partida.getJugadores();
 
 
-        // CREAR BOTONES DE JUGADORES
-        /*for(int i = 0; i < N_JUGADORES; i++) {
-            btn_jugadores[i] = new JButton();
-            btn_jugadores[i].setText(jugadores[i].getNombre());
-            btn_jugadores[i].setOpaque(true);
-            btn_jugadores[i].setBorderPainted(false);
-            btn_jugadores[i].setBackground(Color.green);
-            add(btn_jugadores[i]);
-        }*/
+        //  CREAR IMAGEN Y TITULO
+
+        JPanel titulo_portada = new JPanel();
+        try {
+            BufferedImage portada = ImageIO.read(new File("img.png"));
+            Image portada_escalada = portada.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+            JLabel portada_label = new JLabel(new ImageIcon(portada_escalada));
+
+            JLabel titulo = new JLabel("Mariscos Royale - Nicolás Álvarez y Hugo Barea");
+
+            titulo_portada.add(portada_label);
+            add(titulo_portada);
+            add(titulo);
+
+        } catch(Exception e) {
+            System.out.println("ERROR - Archivo de cabecera no encontrado");
+            return;
+        }
+
+
 
         // CREAR BOTON PARA ACTUALIZAR NUMERO DE RONDA
 
@@ -50,8 +68,9 @@ public class InterfazGrafica extends JFrame implements ActionListener {
 
         // CREAR BOTON DE SIGUIENTE RONDA
 
-        JButton siguienteRonda = new JButton("Siguiente ronda");
+        siguienteRonda = new JButton("Empezar");
         siguienteRonda.addActionListener(this);
+        siguienteRonda.setEnabled(false);
         add(siguienteRonda);
 
 
@@ -66,9 +85,27 @@ public class InterfazGrafica extends JFrame implements ActionListener {
 
         // CREAR BOTON PARA LEER DESDE ARCHIVO
 
-        leer_archivo = new JButton("Leer desde archivo");
+        leer_archivo = new JButton("Simular desde archivo");
         leer_archivo.addActionListener(this);
         add(leer_archivo);
+
+
+        // CREAR TEXTO Y BOTON PARA CREAR JUGADOR REAL
+
+        panel_introducir_jugador = new JPanel();
+        JTextField nombre_jugador = new JTextField();
+        nombre_jugador.setColumns(10);
+        nombre_jugador.setText("Jugador");
+        String array_clases[] = {"Ostra", "Camaron", "Langosta", "Gamba", "Almeja"};
+        JList clases_jugador = new JList(array_clases);
+        JButton crear_jugador = new JButton("Crear Marisco");
+        crear_jugador.addActionListener(this);
+
+        panel_introducir_jugador.add(nombre_jugador);
+        panel_introducir_jugador.add(clases_jugador);
+        panel_introducir_jugador.add(crear_jugador);
+
+        add(panel_introducir_jugador);
     }
 
     public static void main(String args[]) {
@@ -84,6 +121,90 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         interfazGrafica.setVisible(true);
     }
 
+    private void generarBotones() {
+
+        JPanel grid_botones = new JPanel();
+        grid_botones.setLayout(new GridLayout(Math.round(N_JUGADORES / 3), 3));
+
+        for(int i = 0; i < N_JUGADORES; i++) {
+            btn_jugadores[i] = new JButton();
+            btn_jugadores[i].setText(partida.getJugadores()[i].getNombre());
+            btn_jugadores[i].setOpaque(true);
+            btn_jugadores[i].setBorderPainted(false);
+            btn_jugadores[i].setBackground(Color.green);
+            grid_botones.add(btn_jugadores[i]);
+        }
+        add(grid_botones);
+    }
+
+    private void crearPartida() {
+        String nombre_jugador = ((JTextField) panel_introducir_jugador.getComponent(0)).getText();
+        String clase = ((JList<String>) panel_introducir_jugador.getComponent(1)).getSelectedValue();
+
+        partida.leerInformacionDesdeArchivo("input.txt", N_JUGADORES - 1);
+
+        switch(clase) {
+            case "Camaron":
+                partida.addJugador(new Camaron(nombre_jugador, true));
+                break;
+
+            case "Langosta":
+                partida.addJugador(new Langosta(nombre_jugador, true));
+                break;
+
+            case "Ostra":
+                partida.addJugador(new Ostra(nombre_jugador, true));
+                break;
+
+            case "Gamba":
+                partida.addJugador(new Gamba(nombre_jugador, true));
+                break;
+
+            case "Almeja":
+                partida.addJugador(new Almeja(nombre_jugador, true));
+                break;
+        }
+
+        remove(panel_introducir_jugador);
+        generarBotones();
+        siguienteRonda.setEnabled(true);
+
+        // Añadir panel de decision de jugador
+
+        panel_decision = new JPanel();
+
+        JTextField decision = new JTextField();
+        decision.setColumns(10);
+        JButton btn_decision = new JButton("Decidir");
+
+        panel_decision.add(decision);
+        panel_decision.add(btn_decision);
+
+    }
+
+    private void crearSimulacionArchivo() {
+
+       remove(panel_introducir_jugador);
+
+        JFileChooser elegir_archivo = new JFileChooser();
+        elegir_archivo.setCurrentDirectory(new File("."));
+        int opcion = elegir_archivo.showOpenDialog(this);
+
+        if(opcion == JFileChooser.APPROVE_OPTION) {
+            partida.leerInformacionDesdeArchivo(elegir_archivo.getSelectedFile().getName(), N_JUGADORES);
+
+            generarBotones();
+            siguienteRonda.setEnabled(true);
+        }
+    }
+
+    private void gestionarJugadorReal(double informacionAtaque[]) {
+        int id_real = (int) informacionAtaque[0];
+        Jugador j_real = partida.getJugadores()[id_real];
+
+        add(panel_decision);
+
+    }
     public void actionPerformed(ActionEvent e) {
 
         double informacionAtaque[] = new double[5];
@@ -91,11 +212,16 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         int posicion_j2 = 0;
 
         if(e.getSource() instanceof JButton) {
+
+            if(((JButton) e.getSource()).getText() == "Empezar") {
+                ((JButton) e.getSource()).setText("Siguiente ronda");
+                leer_archivo.setEnabled(false);
+            }
+
             if(((JButton) e.getSource()).getText() == "Siguiente ronda") {
                 informacionAtaque = partida.simularAtaque();
                 contador_ronda++;
                 n_ronda.setText("Ronda " + contador_ronda);
-                leer_archivo.setEnabled(false);
 
                 if(informacionAtaque[4] == 1) {
 
@@ -119,23 +245,12 @@ public class InterfazGrafica extends JFrame implements ActionListener {
 
 
             }
-            else if(((JButton) e.getSource()).getText() == "Leer desde archivo") {
-                JFileChooser elegir_archivo = new JFileChooser();
-                elegir_archivo.setCurrentDirectory(new File("."));
-                int opcion = elegir_archivo.showOpenDialog(this);
+            else if(((JButton) e.getSource()).getText() == "Simular desde archivo") {
+                crearSimulacionArchivo();
+            }
 
-                if(opcion == JFileChooser.APPROVE_OPTION) {
-                    partida.leerInformacionDesdeArchivo(elegir_archivo.getSelectedFile().getName());
-
-                    for(int i = 0; i < N_JUGADORES; i++) {
-                        btn_jugadores[i] = new JButton();
-                        btn_jugadores[i].setText(partida.getJugadores()[i].getNombre());
-                        btn_jugadores[i].setOpaque(true);
-                        btn_jugadores[i].setBorderPainted(false);
-                        btn_jugadores[i].setBackground(Color.green);
-                        add(btn_jugadores[i]);
-                    }
-                }
+            else if(((JButton) e.getSource()).getText() == "Crear Marisco") {
+                crearPartida();
             }
         }
 
