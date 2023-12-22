@@ -106,19 +106,17 @@ public abstract class Jugador {
         return retorno;
     }
 
-    public void curarse() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Selecciona una opción para curarte:");
-        System.out.println("0 - Curarse con Mini_Caparazon");
-        System.out.println("1 - Curarse con Super_Caparazon");
+    public void curarse(int n) {
 
-        opcion = scanner.nextInt();
+        double curacion;
 
-        if (opcion == 0){
-            double curacion = new Mini_Caparazon(1, 25).calcularCuracion();
-        } else if(opcion == 1){
-            double curacion = new Super_Caparazon(2, 100).calcularCuracion();
+        if (n == 0){
+            curacion = new Mini_Caparazon(1, 25).calcularCuracion();
+        } else {
+            curacion = new Super_Caparazon(2, 100).calcularCuracion();
         }
+
+        vida += (int) curacion;
     }
 
     public String toString() {

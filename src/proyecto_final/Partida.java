@@ -20,6 +20,16 @@ public class Partida {
         this.resultados = "";
     }
 
+    public int getJugadorByNombre(String nombre) {
+        for(int i = 0; i < jugadores_actuales; i++) {
+            if(jugadores[i].getNombre().equals(nombre)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     public void addJugador(Jugador jugador) {
 
         if (jugadores_actuales == max_jugadores) {
@@ -49,7 +59,7 @@ public class Partida {
         return this.resultados;
     }
 
-    public double[] simularAtaque() {
+    public double[] simularAtaque(int j1, int j2) {
 
         if (jugadores_actuales == 1) {
             return null;
@@ -57,13 +67,30 @@ public class Partida {
 
         // Elegir dos jugadores aleatorios
 
-        int j1 = (int) Math.floor(Math.random() * jugadores_actuales);
-        int j2 = (int) Math.floor(Math.random() * jugadores_actuales);
+        if(j1 == -1 && j2 == -1){
+            j1 = (int) Math.floor(Math.random() * jugadores_actuales);
 
-        while (j1 == j2) {
+            while(jugadores[j1] == null) {
+                j1 = (int) Math.floor(Math.random() * jugadores_actuales);
+            }
+
             j2 = (int) Math.floor(Math.random() * jugadores_actuales);
+
+
+            while (j1 == j2 || jugadores[j2] == null) {
+                j2 = (int) Math.floor(Math.random() * jugadores_actuales);
+            }
         }
 
+
+        System.out.println("j1: " + j1 + " " + jugadores[j1].getNombre() + " j2: " + j2 + " " + jugadores[j2].getNombre());
+
+        System.out.println("\nJUGADORES");
+        for(int i = 0; i < jugadores_actuales; i++) {
+            System.out.println(this.jugadores[i]);
+        }
+
+        System.out.println("\n");
         double informacionAtaque[] = new double[5];
 
         if (!this.jugadores[j1].getEsHumano()) {
@@ -71,7 +98,8 @@ public class Partida {
             System.out.println(this.jugadores[j1].getNombre() + " ha atacado a " + this.jugadores[j2].getNombre() + ": " + -1 * informacionAtaque[2] + " de daño.");
             resultados = resultados + this.jugadores[j1].getNombre() + " ha atacado a " + this.jugadores[j2].getNombre() + ": " + -1 * informacionAtaque[2] + " de daño.\n";
         } else {
-            return new double[]{j1, -1, -1, 1};
+            System.out.println("Ataca el jugador real " + j1);
+            return new double[]{j1, -1, -1, -1, -1};
         }
 
         // Si un jugador muere, meterle en el array de muertos y sacarle del array de jugadores actuales.
@@ -93,6 +121,9 @@ public class Partida {
 
             //this.jugadores[this.max_jugadores - 1] = null;
             this.jugadores[this.jugadores_actuales - 1] = null;
+
+            //this.jugadores[j2] = null;
+
             this.jugadores_actuales--;
 
             if (this.jugadores_actuales == 1) {
