@@ -7,6 +7,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+
+// EL PROGRAMA DEBE ARRANCARSE DESDE ESTE ARCHIVO
+
 public class InterfazGrafica extends JFrame implements ActionListener {
 
     private Partida partida;
@@ -19,6 +22,9 @@ public class InterfazGrafica extends JFrame implements ActionListener {
     private JPanel panel_introducir_jugador;
     private JButton siguienteRonda;
     private JPanel panel_decision;
+    private JButton btn_decision;
+    private JTextField decision;
+
     public InterfazGrafica() {
 
         this.N_JUGADORES = 30;
@@ -29,12 +35,6 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         setSize(500, 1000);
         setTitle("Mariscos Royale");
         setLayout(new FlowLayout());
-
-        /*partida.addJugador(new Legolas( "Manolito", false));
-        partida.addJugador(new Chilla("Fran", false));
-        partida.addJugador(new Tyrion("Paco", false));
-        partida.addJugador(new Bombero( "El Gamer", false));
-        partida.addJugador(new Escritor( "Manuel Rodriguez", false));*/
 
         this.btn_jugadores = new JButton[N_JUGADORES];
         Jugador jugadores[] = partida.getJugadores();
@@ -58,8 +58,6 @@ public class InterfazGrafica extends JFrame implements ActionListener {
             System.out.println("ERROR - Archivo de cabecera no encontrado");
             return;
         }
-
-
 
         // CREAR BOTON PARA ACTUALIZAR NUMERO DE RONDA
 
@@ -106,16 +104,20 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         panel_introducir_jugador.add(crear_jugador);
 
         add(panel_introducir_jugador);
+
+        // PANEL DE DECISION DEL JUGADOR
+
+        panel_decision = new JPanel();
+
+        decision = new JTextField();
+        decision.setColumns(10);
+        btn_decision = new JButton("Decidir");
+        btn_decision.addActionListener(this);
+        panel_decision.add(decision);
+        panel_decision.add(btn_decision);
     }
 
     public static void main(String args[]) {
-
-        /*partida.simularAtaque();
-        partida.simularAtaque();
-        partida.simularAtaque();
-        partida.simularAtaque();
-        partida.simularAtaque();
-        partida.simularAtaque();*/
 
         InterfazGrafica interfazGrafica = new InterfazGrafica();
         interfazGrafica.setVisible(true);
@@ -138,6 +140,9 @@ public class InterfazGrafica extends JFrame implements ActionListener {
     }
 
     private void crearPartida() {
+
+        // Obtener el nombre y la clase del jugador, y rellenar con bots desde un archivo
+
         String nombre_jugador = ((JTextField) panel_introducir_jugador.getComponent(0)).getText();
         String clase = ((JList<String>) panel_introducir_jugador.getComponent(1)).getSelectedValue();
 
@@ -169,22 +174,11 @@ public class InterfazGrafica extends JFrame implements ActionListener {
         generarBotones();
         siguienteRonda.setEnabled(true);
 
-        // Añadir panel de decision de jugador
-
-        panel_decision = new JPanel();
-
-        JTextField decision = new JTextField();
-        decision.setColumns(10);
-        JButton btn_decision = new JButton("Decidir");
-
-        panel_decision.add(decision);
-        panel_decision.add(btn_decision);
-
     }
 
     private void crearSimulacionArchivo() {
 
-       remove(panel_introducir_jugador);
+       remove(panel_introducir_jugador); // si simulamos una partida no se introducirá ningún jugador
 
         JFileChooser elegir_archivo = new JFileChooser();
         elegir_archivo.setCurrentDirectory(new File("."));
@@ -201,8 +195,16 @@ public class InterfazGrafica extends JFrame implements ActionListener {
     private void gestionarJugadorReal(double informacionAtaque[]) {
         int id_real = (int) informacionAtaque[0];
         Jugador j_real = partida.getJugadores()[id_real];
+        String nombre_ataque;
 
-        add(panel_decision);
+        if(((JTextField) panel_decision.getComponent(0)).getText().equals("1")) {
+            pantalla.setText("Elige el nombre del jugador a atacar:");
+            ((JButton) panel_decision.getComponent(1)).setText("Atacar");
+
+        } else if(((JTextField) panel_decision.getComponent(0)).getText().equals("2")) {
+            pantalla.setText("Introduce 1 para un mini caparazón y 2 para un super caparazón");
+            ((JButton) panel_decision.getComponent(1)).setText("Curarse");
+        }
 
     }
     public void actionPerformed(ActionEvent e) {
@@ -219,9 +221,24 @@ public class InterfazGrafica extends JFrame implements ActionListener {
             }
 
             if(((JButton) e.getSource()).getText() == "Siguiente ronda") {
-                informacionAtaque = partida.simularAtaque();
+                remove(btn_decision);
+                remove(decision);
+                informacionAtaque = partida.simularAtaque(-1, -1);
                 contador_ronda++;
                 n_ronda.setText("Ronda " + contador_ronda);
+
+                if(informacionAtaque == null) {
+                    pantalla.setText(partida.getJugadores()[0].nombre + " ha ganado la partida.");
+                    ((JButton) e.getSource()).setEnabled(false);
+                    partida.escribirResultadosEnArchivo("resultados.txt");
+                }
+
+                if(informacionAtaque[4] == -1) {
+                    pantalla.setText("Elige qué hacer:\nIntroduce 1 para atacar\nIntroduce 2 para curarte");
+                    siguienteRonda.setEnabled(false);
+                    ((JButton) panel_decision.getComponent(1)).setText("Decidir");
+                    add(panel_decision);
+                }
 
                 if(informacionAtaque[4] == 1) {
 
@@ -230,27 +247,45 @@ public class InterfazGrafica extends JFrame implements ActionListener {
                             btn_jugadores[i].setBackground(Color.RED);
                         }
                     }
-                    pantalla.setText(partida.getJugadores()[(int) informacionAtaque[0]].getNombre() + " ha atacado a " + partida.getJugadores()[(int) informacionAtaque[1]].getNombre() + ": " + -1 * informacionAtaque[2] + " de daño.\n" + partida.getMuertos()[N_JUGADORES - partida.getVivos() - 1].nombre + " ha muerto.");
+                    pantalla.setText(partida.getJugadores()[(int) informacionAtaque[0]].getNombre() + " ha atacado a " + partida.getMuertos()[N_JUGADORES - partida.getVivos() - 1].nombre + ": " + -1 * informacionAtaque[2] + " de daño.\n" + partida.getMuertos()[N_JUGADORES - partida.getVivos() - 1].nombre + " ha muerto.");
 
-                    if(partida.getVivos() < 2) {
-                        pantalla.setText(partida.getJugadores()[0].nombre + " ha ganado la partida.");
-                        ((JButton) e.getSource()).setEnabled(false);
-                        partida.escribirResultadosEnArchivo("resultados.txt");
-                    }
 
-                } else {
+                } else if(informacionAtaque[4] != -1) {
                     pantalla.setText(partida.getJugadores()[(int) informacionAtaque[0]].getNombre() + " ha atacado a " + partida.getJugadores()[(int) informacionAtaque[1]].getNombre() + ": " + -1 * informacionAtaque[2] + " de daño.");
                 }
 
-
-
             }
-            else if(((JButton) e.getSource()).getText() == "Simular desde archivo") {
+            else if(((JButton) e.getSource()).getText().equals("Simular desde archivo")) {
                 crearSimulacionArchivo();
             }
 
-            else if(((JButton) e.getSource()).getText() == "Crear Marisco") {
+            else if(((JButton) e.getSource()).getText().equals("Crear Marisco")) {
                 crearPartida();
+            }
+
+            else if(((JButton) e.getSource()).getText().equals("Decidir")) {
+                gestionarJugadorReal(informacionAtaque);
+            }
+
+            else if(((JButton) e.getSource()).getText().equals("Atacar")) {
+                String nombre_ataque = ((JTextField) panel_decision.getComponent(0)).getText();
+                informacionAtaque = partida.simularAtaque((int) informacionAtaque[0], partida.getJugadorByNombre(nombre_ataque));
+                siguienteRonda.setEnabled(true);
+
+                if(informacionAtaque[4] == 1) {
+                    for(int i = 0; i < btn_jugadores.length; i++) {
+                        if(btn_jugadores[i].getText().equals(partida.getMuertos()[N_JUGADORES - partida.getVivos() - 1].getNombre())) {
+                            btn_jugadores[i].setBackground(Color.RED);
+                        }
+                    }
+                    pantalla.setText(partida.getJugadores()[(int) informacionAtaque[0]].getNombre() + " ha atacado a " + partida.getMuertos()[N_JUGADORES - partida.getVivos() - 1].nombre + ": " + -1 * informacionAtaque[2] + " de daño.\n" + partida.getMuertos()[N_JUGADORES - partida.getVivos() - 1].nombre + " ha muerto.");
+                }
+            }
+
+            else if(((JButton) e.getSource()).getText().equals("Curarse")) {
+                String curacion = ((JTextField) panel_decision.getComponent(0)).getText();
+                partida.getJugadores()[(int) informacionAtaque[0]].curarse(Integer.parseInt(curacion) - 1);
+                siguienteRonda.setEnabled(true);
             }
         }
 
